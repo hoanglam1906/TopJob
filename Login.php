@@ -280,11 +280,11 @@ span.psw {
 					<b>Password</b>
 				</label>
 				<input type="password" placeholder="Enter your password here" name="pass" id="password" required="">
-				<button type="submit" value="Login" name="btn_submit" id="submitbtn" onclick="validate()">Login</button>
+				<button type="submit" value="Login" name="btn_submit" id="submitbtn" >Login</button>
 				<input type="checkbox" > Remember me
 			</div>
 			<div class="container-2" style="background-color:#f1f1f1">
-    			<button type="button" class="cancelbtn" onclick="window.open("Login.html")">Cancel</button>
+    			<button type="button" class="cancelbtn" onclick="window.open("Login.php")">Cancel</button>
     			<span class="psw">Forgot <a href="#">password?</a></span>
   			</div>
 
