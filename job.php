@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -6,7 +7,7 @@
         <!-- <meta http-equiv="refresh" content="3" > -->
         <link rel="icon" href="Images/logo.png">
         <!-- <link rel="stylesheet" type="text/css" href="About.css"> -->
-        <title>TopJob - About Us</title>
+        <title>Employer</title>
         <style >
             body
             {
@@ -224,100 +225,81 @@
                 {
                     width: 100%;
                 }
-            }
-            input[type=text], input[type=password], input[type=float] {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
-            }
-            button {
-                background-color: #ff751a;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .container {
-                padding: 16px;
-                width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 50px;
-            }
-            .container-2 {
-                padding: 16px;
-                width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-
-            }
+            }		
         </style>
     </head>
     <body>
+
         <section class="header">
-		<div class header-contents>
-			<a class="logo" href="index.html">
-				<img src="Images/logo_small.png">
-			</a>
-		
-			<nav class="nav">
-				<li class="nav__itembox"> <a class="nav__items" href="employer.html">Profile</a> </li>
-				<li class="nav__itembox"> <a class="nav__itemsred" href="job.php">Jobs</a> </li>	
-				<li class="nav__itembox"> <a class="nav__items" href="Find Students.html">Student</a> </li>		
-				<li class="nav__itembox"> <a class="nav__items" href="index.html">Signout</a> </li>
-			</nav>
-		</div>
-	</section>
+            <div class header-contents>
+                <a class="logo" href="index.html">
+                    <img src="Images/logo_small.png">
+                </a>
+
+                <nav class="nav">
+                    <li class="nav__itembox"> <a class="nav__items" href="employer.html">Profile</a> </li>
+                    <li class="nav__itembox"> <a class="nav__itemsred" href="job.php">Jobs</a> </li>	
+                    <li class="nav__itembox"> <a class="nav__items" href="Find Students.html">Student</a> </li>		
+                    <li class="nav__itembox"> <a class="nav__items" href="index.html">Signout</a> </li>
+                </nav>
+            </div>
+        </section>
 
         <?php require_once("lib/connection.php"); ?>
 
         <?php
-        if (isset($_POST["btn_submit"])) {
-            //lấy thông tin từ các form bằng phương thức POST
-            $title = $_POST["job_title"];
-            $requirement = $_POST["requirement"];
-            $location = $_POST["location"];
-            $budget = $_POST["budget"];
-            $purchasement = $_POST["purchasement_method"];
+        $sql = "SELECT * FROM job LIMIT 10";
+        $query = mysqli_query($conn, $sql);
+        ?>
+        <?php
+        
 
-            if ($title == "" || $requirement == "" || $location == "" || $budget == "" || $purchasement == "") {
-                echo "Fill all!";
-            } else {
-                // Viết câu lệnh thêm thông tin người dùng
-                $sql = "INSERT INTO job (job_title, requirement, location, budget, purchasement_method) VALUES ('$title', '$requirement', '$location', '$budget', '$purchasement')";
-                // thực thi câu $sql với biến conn lấy từ file connection.php
-                mysqli_query($conn, $sql);
-
-                echo "Successfully !";
-
-                header('Location: postjob.php');
-            }
+        if (isset($_GET["id_delete"])) {
+            //Lây id được gửi qua từ bên job.php
+            $id = $_GET["id_delete"];
+            //Thực thi câu lệnh sql delete để xóa job
+            $sql = "delete from job where jobID = $id";
+            $query = mysqli_query($conn, $sql);
+            //Chuyển hướng trang web về lại trang quan-ly-thanh-vien.php
+//            header('Location: job.php');
         }
         ?>
+        <a class="nav__itemsnew" href="postjob.php">Post A Job</a>
+        <table border="1px;" align="center">
+            <thead>
+                <tr>
+                    <td bgcolor="#E6E6FA">ID</td>
+                    <td bgcolor="#E6E6FA">Job title</td>
+                    <td bgcolor="#E6E6FA">Requirement</td>
+                    <td bgcolor="#E6E6FA">Location</td>
+                    <td bgcolor="#E6E6FA">Budget</td>
+                    <td bgcolor="#E6E6FA">Purchasement Method</td>
+                <tr>
+            </thead>
+            <tbody>
+<?php
+while ($data = mysqli_fetch_array($query)) {
+    ?>
+                    <tr>
+                        <td><?php echo $data['jobID'];
+                ?></td>
+                        <td><?php echo $data['job_title']; ?></td>
+                        <td><?php echo $data['requirement']; ?></td>
+                        <td><?php echo $data['location']; ?></td>
+                        <td><?php echo $data['budget']; ?></td>
+                        <td><?php echo $data['purchasement_method']; ?></td>
+
+                        <td>
+                            <a href="ChangeInfo.php?id=<?php echo $data['jobID']; ?>">Change Info</a>
+                            <a href="job.php?id_delete=<?php echo $data['jobID']; ?>">Remove</a>
+                        </td>
+                    </tr>
+    <?php
+}
+?>
+            </tbody>
+        </table>
 
 
-        <form action="postjob.php" method="post">
-            <h3>Post a Job</h3>
-            <div class="container">
-                <label><b>Job title</b></label>
-                <input type="text" id="job_title" name="job_title" required><br>
-                <label><b>Requirement</b></label>
-                <input type="text" id="requirement" name="requirement" required><br>
-                <label><b>Location</b></label>
-                <input type="text" id="location" name="location" required><br>
-                <label><b>Budget</b></label>
-                <input type="float" id="budget" name="budget" required><br>
-                <label><b>Purchasement Method</b></label>
-                <input type="text" id="purchasement_method" name="purchasement_method" required><br>
-            </div>
-            <div class="container-2" style="background-color:#f1f1f1">
-                <button type="submit" name="btn_submit">Post!</button>
-            </div>
-        </form>
     </body>
 </html>

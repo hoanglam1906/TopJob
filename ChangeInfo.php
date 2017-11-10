@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -225,9 +224,41 @@
                 {
                     width: 100%;
                 }
-            }		
+            }
+            input[type=text], input[type=password], input[type=float] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+            button {
+                background-color: #ff751a;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+            }
+            .container {
+                padding: 16px;
+                width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 50px;
+            }
+            .container-2 {
+                padding: 16px;
+                width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
         </style>
     </head>
+
     <body>
         <section class="header">
             <div class header-contents>
@@ -236,25 +267,69 @@
                 </a>
 
                 <nav class="nav">
-                    <li class="nav__itembox"> <a class="nav__items" href="index.html">Home</a> </li>
-                    <li class="nav__itembox"> <a class="nav__itemsred" href="About.html">About Us</a> </li>
-                    <!-- <li class="nav__itembox"> <a class="nav__items" href="Student.html">Student</a> </li> -->
-                    <!-- <li class="nav__itembox"> <a class="nav__items" href="University.html">Trường đại học</a> </li> -->
-                    <!-- <li class="nav__itembox"> <a class="nav__items" href="Employer.html">Employer</a> </li> -->
-                    <li class="nav__itembox"> <a class="nav__items" href="Login.php">Login</a> </li>
-                    <li class="nav__itembox"> <a class="nav__items" href="Signup.php">Sign Up</a> </li>
+                    <li class="nav__itembox"> <a class="nav__items" href="employer.html">Profile</a> </li>
+                    <li class="nav__itembox"> <a class="nav__itemsred" href="job.php">Jobs</a> </li>	
+                    <li class="nav__itembox"> <a class="nav__items" href="Find Students.html">Student</a> </li>		
+                    <li class="nav__itembox"> <a class="nav__items" href="index.html">Signout</a> </li>
                 </nav>
             </div>
         </section>
-        <div class="nav_replace">
-            <li class="nav__itemboxnew"> <a class="nav__itemsnew" href="index.html">Home</a> </li>
-            <li class="nav__itemboxnew"> <a class="nav__itemsrednew" href="About.html">About Us</a> </li>
-            <!-- <li class="nav__itemboxnew"> <a class="nav__itemsnew" href="Student.html">Student</a> </li>
-            <li class="nav__itemboxnew"> <a class="nav__itemsnew" href="Employer.html">Employer</a> </li> -->
-            <li class="nav__itemboxnew"> <a class="nav__itemsnew" href="Login.php">Login</a> </li>
-            <li class="nav__itemboxnew"> <a class="nav__itemsnew" href="Signup.php">Sign Up</a> </li>
-        </div>
-        <a class="nav__itemsnew" href="postjob.php">Post A Job</a>
-        <a class="nav__itemsnew" href="#">Manage Job</a>
+        <?php require_once("lib/connection.php"); ?>
+        <?php
+        $id = -1;
+        if (isset($_GET['jobID'])) {
+            $id = $_GET['jobID'];
+        }
+        $sql = "SELECT * FROM users WHERE jobID = " . $id;
+        $query = mysqli_query($conn, $sql);
+        ?>
+        <?php
+        if (isset($_POST["btn_submit"])) {
+            //lấy thông tin từ các form bằng phương thức POST
+            $id = $_POST["id"];
+            $title = $_POST["job_title"];
+            $requirement = $_POST["requirement"];
+            $location = $_POST["location"];
+            $budget = $_POST["budget"];
+            $purchasement = $_POST["purchasement_method"];
+
+
+            // Viết câu lệnh cập nhật thông tin 
+            $sql = "UPDATE job SET job_title = '$title', requirement = '$requirement', location = '$location', budget = '$budget', purchasement_method = '$purchasement' WHERE id=$id ";
+            // thực thi câu $sql với biến conn lấy từ file connection.php
+            mysqli_query($conn, $sql);
+            echo "Successfully";
+//            header('Location: job.php');
+        }
+
+
+//        if (isset($_GET['jobID'])) {
+//            $id = $_GET['jobID'];
+//        }
+//        $sql = "SELECT * FROM job WHERE jobID = " . $id;
+//        $query = mysqli_query($conn, $sql);
+        ?>
+
+
+
+
+        <form action="ChangeInfo.php" method="post">
+            <h3>Change Job Info</h3>
+            <div class="container">
+                <label><b>Job title</b></label>
+                <input type="text" id="job_title" name="job_title" required><br>
+                <label><b>Requirement</b></label>
+                <input type="text" id="requirement" name="requirement" required><br>
+                <label><b>Location</b></label>
+                <input type="text" id="location" name="location" required><br>
+                <label><b>Budget</b></label>
+                <input type="float" id="budget" name="budget" required><br>
+                <label><b>Purchasement Method</b></label>
+                <input type="text" id="purchasement_method" name="purchasement_method" required><br>
+            </div>
+            <div class="container-2" style="background-color:#f1f1f1">
+                <button type="submit" name="btn_submit">Change!</button>
+            </div>
+        </form>
     </body>
 </html>
