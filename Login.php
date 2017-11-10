@@ -206,9 +206,7 @@ span.psw {
 	</style>
 </head>
 <body>
-    <?php
-        session_start();
-    ?>
+    
     <?php
     require_once("lib/connection.php");
     if (isset($_POST["btn_submit"])) {
@@ -229,19 +227,28 @@ span.psw {
 		$num_rows = mysqli_num_rows($query);
 		if ($num_rows==0) {
 			echo "Wrong email or password!";
-		}else{
+		}
+                else{
 			// Lấy ra thông tin người dùng và lưu vào session
 			while ( $data = mysqli_fetch_array($query) ) {
 	    		
 				$_SESSION['username'] = $data["username"];
 				$_SESSION["email"] = $data["email"];
 				
-				
+			if($data["position"]=='')
+                        {
+                            header('Location: user.html?'.$data['position']);
+                        }                
+                        else if ($data["position"]=='student')
+                        {
+                            header('Location: student.html');
+                        }
+                        else 
+                        {
+                            header('Location: employer.html');
+                        }	
 	    	}
 			
-                // Thực thi hành động sau khi lưu thông tin vào session
-                // tiến hành chuyển hướng trang web 
-			header('Location: user.html');
 		}
 	}
 }
@@ -284,7 +291,7 @@ span.psw {
 				<input type="checkbox" > Remember me
 			</div>
 			<div class="container-2" style="background-color:#f1f1f1">
-    			<button type="button" class="cancelbtn" onclick="window.open("Login.php")">Cancel</button>
+    			<button type="button" class="cancelbtn" onclick="header("Login.php")">Cancel</button>
     			<span class="psw">Forgot <a href="#">password?</a></span>
   			</div>
 
