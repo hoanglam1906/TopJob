@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -6,7 +7,7 @@
         <!-- <meta http-equiv="refresh" content="3" > -->
         <link rel="icon" href="Images/logo.png">
         <!-- <link rel="stylesheet" type="text/css" href="About.css"> -->
-        <title>Change Job Info</title>
+        <title>Student - Jobs</title>
         <style >
             body
             {
@@ -224,42 +225,11 @@
                 {
                     width: 100%;
                 }
-            }
-            input[type=text], input[type=password], input[type=float] {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
-            }
-            button {
-                background-color: #ff751a;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-            .container {
-                padding: 16px;
-                width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 50px;
-            }
-            .container-2 {
-                padding: 16px;
-                width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-
-            }
+            }		
         </style>
     </head>
-
     <body>
+
         <section class="header">
             <div class header-contents>
                 <a class="logo" href="index.html">
@@ -274,64 +244,67 @@
                 </nav>
             </div>
         </section>
+
         <?php require_once("lib/connection.php"); ?>
+
         <?php
-        $id = -1;
-        if (isset($_GET['jobID'])) {
-            $id = $_GET['jobID'];
-        }
-        $sql = "SELECT * FROM users WHERE jobID = " . $id;
+        $sql = "SELECT * FROM job LIMIT 10";
         $query = mysqli_query($conn, $sql);
         ?>
         <?php
-        if (isset($_POST["btn_submit"])) {
-            //lấy thông tin từ các form bằng phương thức POST
-            $url = $_SERVER['REQUEST_URI'];
-            
-            $id = $_GET["id"];
-            $title = $_POST["job_title"];
-            $requirement = $_POST["requirement"];
-            $location = $_POST["location"];
-            $budget = $_POST["budget"];
-            $purchasement = $_POST["purchasement_method"];
-
-
-            // Viết câu lệnh cập nhật thông tin 
-            $sql = "UPDATE job SET job_title = '$title', requirement = '$requirement', location = '$location', budget = '$budget', purchasement_method = '$purchasement' WHERE id=$id ";
-            // thực thi câu $sql với biến conn lấy từ file connection.php
-            mysqli_query($conn, $sql);
-            echo "Successfully";
+        if (isset($_GET["id_delete"])) {
+            //Lây id được gửi qua từ bên job.php
+            $id = $_GET["id_delete"];
+            //Thực thi câu lệnh sql delete để xóa job
+            $sql = "delete from job where jobID = $id";
+            $query = mysqli_query($conn, $sql);
+            //Chuyển hướng trang web về lại trang quan-ly-thanh-vien.php
 //            header('Location: job.php');
         }
-
-
-//        if (isset($_GET['jobID'])) {
-//            $id = $_GET['jobID'];
-//        }
-//        $sql = "SELECT * FROM job WHERE jobID = " . $id;
-//        $query = mysqli_query($conn, $sql);
         ?>
+        <a class="nav__itemsnew" href="postjob.php">Post A Job</a>
+        <table border="1px;" align="center">
+            <thead>
+                <tr>
+                    <td bgcolor="#E6E6FA">ID</td>
+                    <td bgcolor="#E6E6FA">Job title</td>
+                    <td bgcolor="#E6E6FA">Requirement</td>
+                    <td bgcolor="#E6E6FA">Location</td>
+                    <td bgcolor="#E6E6FA">Budget</td>
+                    <td bgcolor="#E6E6FA">Purchasement Method</td>
+                <tr>
+            </thead>
+            <tbody>
+                <?php
+                while ($data = mysqli_fetch_array($query)) {
+                    ?>
+                    <tr>
+                        <td><?php echo $data['jobID'];
+                    ?></td>
+                        <td><?php echo $data['job_title']; ?></td>
+                        <td><?php echo $data['requirement']; ?></td>
+                        <td><?php echo $data['location']; ?></td>
+                        <td><?php echo $data['budget']; ?></td>
+                        <td><?php echo $data['purchasement_method']; ?></td>
 
+                        
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
 
-
-
-        <form action="ChangeInfo.php" method="post">
-            <h3>Change Job Info</h3>
-            <div class="container">
-                <label><b>Job title</b></label>
-                <input type="text" id="job_title" name="job_title" required><br>
-                <label><b>Requirement</b></label>
-                <input type="text" id="requirement" name="requirement" required><br>
-                <label><b>Location</b></label>
-                <input type="text" id="location" name="location" required><br>
-                <label><b>Budget</b></label>
-                <input type="float" id="budget" name="budget" required><br>
-                <label><b>Purchasement Method</b></label>
-                <input type="text" id="purchasement_method" name="purchasement_method" required><br>
-            </div>
-            <div class="container-2" style="background-color:#f1f1f1">
-                <button type="submit" name="btn_submit">Change!</button>
-            </div>
-        </form>
+        <div id="fb-root"></div>
+        <script>(function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id))
+                    return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.11';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="5"></div>        
     </body>
 </html>

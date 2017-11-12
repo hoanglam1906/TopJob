@@ -6,7 +6,7 @@
         <!-- <meta http-equiv="refresh" content="3" > -->
         <link rel="icon" href="Images/logo.png">
         <!-- <link rel="stylesheet" type="text/css" href="About.css"> -->
-        <title>TopJob - About Us</title>
+        <title>Employer - Post a job</title>
         <style >
             body
             {

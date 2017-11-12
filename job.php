@@ -7,7 +7,7 @@
         <!-- <meta http-equiv="refresh" content="3" > -->
         <link rel="icon" href="Images/logo.png">
         <!-- <link rel="stylesheet" type="text/css" href="About.css"> -->
-        <title>Employer</title>
+        <title>Employer - Jobs</title>
         <style >
             body
             {
@@ -252,8 +252,6 @@
         $query = mysqli_query($conn, $sql);
         ?>
         <?php
-        
-
         if (isset($_GET["id_delete"])) {
             //Lây id được gửi qua từ bên job.php
             $id = $_GET["id_delete"];
@@ -277,12 +275,12 @@
                 <tr>
             </thead>
             <tbody>
-<?php
-while ($data = mysqli_fetch_array($query)) {
-    ?>
+                <?php
+                while ($data = mysqli_fetch_array($query)) {
+                    ?>
                     <tr>
                         <td><?php echo $data['jobID'];
-                ?></td>
+                    ?></td>
                         <td><?php echo $data['job_title']; ?></td>
                         <td><?php echo $data['requirement']; ?></td>
                         <td><?php echo $data['location']; ?></td>
@@ -294,12 +292,22 @@ while ($data = mysqli_fetch_array($query)) {
                             <a href="job.php?id_delete=<?php echo $data['jobID']; ?>">Remove</a>
                         </td>
                     </tr>
-    <?php
-}
-?>
+                    <?php
+                }
+                ?>
             </tbody>
         </table>
 
-
+        <div id="fb-root"></div>
+        <script>(function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id))
+                    return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.11';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="5"></div>        
     </body>
 </html>
